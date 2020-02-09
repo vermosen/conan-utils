@@ -23,7 +23,7 @@
 from conans import ConanFile, CMake, tools
 
 class GoogleBenchmarkConan(ConanFile):
-    name = "gbenchmark"
+    name = "gbench"
     version = "1.4.1"
     description = "A microbenchmark support library"
     homepage = "https://github.com/google/benchmark"
