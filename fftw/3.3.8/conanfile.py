@@ -43,7 +43,7 @@ class FFTWConan(ConanFile):
         cmake.definitions["WITH_COMBINED_THREADS"] = self.options.combinedthreads
         cmake.definitions["ENABLE_FLOAT"] = self.options.precision == "single"
         cmake.definitions["ENABLE_LONG_DOUBLE"] = self.options.precision == "longdouble"
-        cmake.configure(build_folder=self._build_subfolder)
+        cmake.configure(source_folder=self._source_subfolder, build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
