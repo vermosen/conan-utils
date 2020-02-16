@@ -39,7 +39,8 @@ class TwsConan(ConanFile):
         it = vers.as_list
         sha256 = "9bf1fe5182a604b4135edc1a425ae356c9ad15e9b23f9f12a02e80184c3a249c"
         tools.get("%s/downloads/twsapi_macunix.%s%s.%02d.zip" % (self.homepage, it[0], it[1], it[2]))
-        extracted_dirs = {"IBJts/source/cppclient":"client", "IBJts/samples/Cpp":"samples"}
+
+        extracted_dirs = {"IBJts/source/cppclient":"tws"}
         
         # create a client and a sample folder
         for k, v in extracted_dirs.items():
@@ -50,10 +51,10 @@ class TwsConan(ConanFile):
         f.writelines(
             ['cmake_minimum_required(VERSION 2.8.9)\r\n',
              'project(tws)\r\n',
-             'include_directories(client)\r\n',
+             'include_directories(tws)\r\n',
              'SET(CMAKE_CXX_STANDARD 11)\r\n'
-             'file(GLOB SOURCES "client/client/*.cpp" "client/ssl/*.cpp")\r\n',
-             'file(GLOB PUBLIC_HEADER "client/client/*.h" "client/ssl/*.h")\r\n'
+             'file(GLOB SOURCES "tws/client/*.cpp")\r\n',
+             'file(GLOB PUBLIC_HEADER "tws/client/*.h")\r\n'
             ])
         
         if self.options.shared:
@@ -77,7 +78,8 @@ class TwsConan(ConanFile):
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
         self.copy(pattern="*.pdb", dst="bin", src=".", keep_path=False)
         self.copy(pattern="*.a", dst="lib", src="lib", keep_path=True)
-        self.copy(pattern="*.h", dst="include", src="client", keep_path=False)
+        self.copy(pattern="*.h", dst="include/tws", src="tws/client", keep_path=True)
+
         cmake = self._configure_cmake()
         cmake.install()
 
