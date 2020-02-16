@@ -28,9 +28,7 @@ class TwsConan(ConanFile):
     _source_subfolder = "source_subfolder"
 
     def configure(self):
-        if self.settings.os == "Macos":
-            pass
-        elif self.settings.os == "Linux":
+        if self.settings.os == "Linux":
             pass
         else:
             raise ConanInvalidConfiguration("os not supported")
