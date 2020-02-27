@@ -22,7 +22,7 @@ class RCppConan(ConanFile):
         pass
 
     def build_requirements(self):
-        self.build_requires("r-cran/3.5.0@rubedo/stable")
+        self.build_requires("r-cran/3.5.0@%s/%s" % (self.user, self.channel))
 
     def source(self):
         #https://github.com/RcppCore/Rcpp/archive/1.0.1.tar.gz

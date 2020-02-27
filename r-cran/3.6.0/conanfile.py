@@ -52,7 +52,7 @@ class RConan(ConanFile):
         self.build_requires("zlib/1.2.11@%s/%s" % (self.user, self.channel))
 
         if self.options.lapack:
-            self.build_requires("lapack/3.8.0@rubedo/stable")
+            self.build_requires("lapack/3.8.0@%s/%s" % (self.user, self.channel))
 
     def source(self):
         #https://cran.r-project.org/src/base/R-3/R-3.5.0.tar.gz

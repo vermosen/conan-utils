@@ -29,7 +29,7 @@ class RConan(ConanFile):
     generators = "cmake"
     _source_subfolder = 'src'
 
-    # info: build with conan create . r-cran/3.5.0@rubedo/stable --pr=gcc73 --build=missing -ks -o pcre:with_utf=True
+    # info: build with conan create . r-cran/3.5.0@jvermosen/stable --pr=gcc73 --build=missing -ks -o pcre:with_utf=True
     def configure(self):
         # from https://cran.r-project.org/doc/manuals/r-release/R-admin.html
         self.options["pcre"].with_utf = True

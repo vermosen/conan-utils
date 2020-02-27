@@ -22,6 +22,7 @@ class LibcurlConan(ConanFile):
     generators = "cmake"
 
     settings = "os", "arch", "compiler", "build_type"
+
     options = {"shared": [True, False],
                "fPIC": [True, False],
                "with_openssl": [True, False],
@@ -38,23 +39,25 @@ class LibcurlConan(ConanFile):
                "with_largemaxwritesize": [True, False],
                "with_nghttp2": [True, False],
                "with_brotli": [True, False]}
-    default_options = {'shared': False,
-                       'fPIC': True,
-                       'with_openssl': True,
-                       'with_winssl': False,
-                       'disable_threads': False,
-                       'with_ldap': False,
-                       'custom_cacert': False,
-                       'darwin_ssl': True,
-                       'with_libssh2': False,
-                       'with_libidn': False,
-                       'with_librtmp': False,
-                       'with_libmetalink': False,
-                       'with_libpsl': False,
-                       'with_largemaxwritesize': False,
-                       'with_nghttp2': False,
-                       'with_brotli': False
-                       }
+
+    default_options = {
+        'shared': False,
+        'fPIC': True,
+        'with_openssl': True,
+        'with_winssl': False,
+        'disable_threads': False,
+        'with_ldap': False,
+        'custom_cacert': False,
+        'darwin_ssl': True,
+        'with_libssh2': False,
+        'with_libidn': False,
+        'with_librtmp': False,
+        'with_libmetalink': False,
+        'with_libpsl': False,
+        'with_largemaxwritesize': False,
+        'with_nghttp2': False,
+        'with_brotli': False
+    }
 
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
@@ -106,14 +109,14 @@ class LibcurlConan(ConanFile):
             if self.settings.os == "Windows" and self.options.with_winssl:
                 pass
             else:
-                self.requires.add("openssl/1.1.1c@rubedo/stable")
+                self.requires.add("openssl/1.1.1c@%s/%s" % (self.user, self.channel))
         if self.options.with_libssh2:
             if self.settings.compiler != "Visual Studio":
-                self.requires.add("libssh2/1.8.0@rubedo/stable")
+                self.requires.add("libssh2/1.8.0@%s/%s" % (self.user, self.channel))
         if self.options.with_nghttp2:
-            self.requires.add("nghttp2/1.38.0@rubedo/stable")
+            self.requires.add("nghttp2/1.38.0@%s/%s" % (self.user, self.channel))
 
-        self.requires.add("zlib/1.2.11@rubedo/stable")
+        self.requires.add("zlib/1.2.11@%s/%s" % (self.user, self.channel))
 
     def source(self):
         source_url = "https://curl.haxx.se/download/"
