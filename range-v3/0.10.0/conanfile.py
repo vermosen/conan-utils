@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, CMake
+from conans import ConanFile, tools, CMake
 
 class Rangev3Conan(ConanFile):
     name = "range-v3"
@@ -13,6 +13,10 @@ class Rangev3Conan(ConanFile):
     exports_sources = "include*", "LICENSE.txt", "CMakeLists.txt", "cmake/*", "Version.cmake", "version.hpp.in"
     no_copy_source = True
 
+    def source(self):
+        git = tools.Git()
+        git.clone('%s.git' % (self.url), self.version)
+        
     def package(self):
         cmake = CMake(self)
         cmake.definitions["RANGE_V3_TESTS"] = "OFF"
