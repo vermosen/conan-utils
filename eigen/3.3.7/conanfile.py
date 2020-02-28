@@ -74,5 +74,5 @@ class EigenConan(ConanFile):
         if self.settings.build_type == 'Debug':
             # case sensitive in cmake
             self.user_info.GDB_PRINTER_FOLDER = 'gdb'
-            self.user_info.GDB_PRINTER_FILES  = 'eigen_printers.py'
+            self.user_info.GDB_PRINTER_FILE   = 'eigen_printers.py'
             self.user_info.GDB_IMPORT_CLASSES = 'register_eigen_printers;build_eigen_dictionary'
