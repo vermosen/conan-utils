@@ -33,6 +33,12 @@ class EigenConan(ConanFile):
         tools.get("{0}/get/{1}.tar.gz".format(source_url, self.version))
         shutil.move(glob("eigen-eigen-*")[0], self._source_subfolder)
 
+        if self.settings.build_type == 'Debug':
+            #s.makedirs('%s/%s/debug/gdb' % (self.build_folder, self._build_subfolder), exist_ok=True)
+            shutil.copyfile( '%s/%s/debug/gdb/printers.py' % (self.source_folder, self._source_subfolder)
+                           , '%s/%s/debug/gdb/eigen_printers.py' % (self.source_folder, self._source_subfolder)
+                           , follow_symlinks = True)
+
     def _configure_cmake(self):
         
         cmake = CMake(self)
@@ -60,8 +66,8 @@ class EigenConan(ConanFile):
 
         # additional ressources
         if self.settings.build_type == 'Debug':
-            self.copy('*.py', src='src/debug/gdb', dst='gdb/eigen', keep_path=True)
-        
+            self.copy('eigen_printers.py', src='src/debug/gdb', dst='gdb', keep_path=True)
+            
     def package_info(self):
         self.cpp_info.includedirs = ['include/eigen3']
 
