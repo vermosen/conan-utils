@@ -114,7 +114,7 @@ class BoostConan(ConanFile):
             if self.options.zlib:
                 self.requires("zlib/1.2.11@%s/%s" % (self.user, self.channel))
             if self.options.bzip2:
-                self.requires("bzip2/1.0.6@%s/%s" % (self.user, self.channel))
+                self.requires("bzip2/1.0.8@%s/%s" % (self.user, self.channel))
             if self.options.lzma:
                 self.requires("lzma/5.2.4@%s/%s" % (self.user, self.channel))
             if self.options.zstd:
@@ -651,6 +651,7 @@ class BoostConan(ConanFile):
         contents = ""
         if self.zip_bzip2_requires_needed:
             def create_library_config(name):
+                self.output.info(self.deps_cpp_info[name])
                 includedir = self.deps_cpp_info[name].include_paths[0].replace('\\', '/')
                 libdir = self.deps_cpp_info[name].lib_paths[0].replace('\\', '/')
                 lib = self.deps_cpp_info[name].libs[0]
