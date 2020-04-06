@@ -30,21 +30,25 @@ class TwsConan(ConanFile):
     def configure(self):
         if self.settings.os == "Linux":
             pass
+        elif self.settings.os == "Windows":
+            pass
         else:
             pass
             #raise ConanInvalidConfiguration("os not supported")
 
     def source(self):
-        #http://interactivebrokers.github.io/downloads/twsapi_macunix.972.18.zip
-        vers = tools.Version(self.version)
-        it = vers.as_list
+    
+        vers = tools.Version(self.version).as_list
+
         sha256 = "9bf1fe5182a604b4135edc1a425ae356c9ad15e9b23f9f12a02e80184c3a249c"
+        
+        if self.settings.os == "Windows":
+            tools.download("%s/downloads/TWS API Install %s%s.%02d.msi" % (self.homepage, vers[0], vers[1], vers[2]),
+                'install.msi')
+            raise
 
-        if 
         elif self.settings.os == "Linux":
-            
-            tools.get("%s/downloads/twsapi_macunix.%s%s.%02d.zip" % (self.homepage, it[0], it[1], it[2]))
-
+            tools.get("%s/downloads/twsapi_macunix.%s%s.%02d.zip" % (self.homepage, vers[0], vers[1], vers[2]))
             extracted_dirs = {"IBJts/source/cppclient":"tws"}
         
         # create a client and a sample folder

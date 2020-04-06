@@ -778,7 +778,7 @@ class BoostConan(ConanFile):
                         option = "" if tools.os_info.is_windows else "-with-toolset="
                         cmd = "%s %s%s" % (bootstrap, option, self._get_boostrap_toolset())
                     self.output.info(cmd)
-                    with tools.environment_append({"CC": None, "CXX": None, "CFLAGS": None, "CXXFLAGS": None}):
+                    with tools.environment_append({"CC": "", "CXX": "", "CFLAGS": "", "CXXFLAGS": ""}):
                         self.run(cmd)
 
         except Exception as exc:
