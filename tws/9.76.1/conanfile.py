@@ -31,39 +31,44 @@ class TwsConan(ConanFile):
         if self.settings.os == "Linux":
             pass
         else:
-            raise ConanInvalidConfiguration("os not supported")
+            pass
+            #raise ConanInvalidConfiguration("os not supported")
 
     def source(self):
         #http://interactivebrokers.github.io/downloads/twsapi_macunix.972.18.zip
         vers = tools.Version(self.version)
         it = vers.as_list
         sha256 = "9bf1fe5182a604b4135edc1a425ae356c9ad15e9b23f9f12a02e80184c3a249c"
-        tools.get("%s/downloads/twsapi_macunix.%s%s.%02d.zip" % (self.homepage, it[0], it[1], it[2]))
 
-        extracted_dirs = {"IBJts/source/cppclient":"tws"}
+        if 
+        elif self.settings.os == "Linux":
+            
+            tools.get("%s/downloads/twsapi_macunix.%s%s.%02d.zip" % (self.homepage, it[0], it[1], it[2]))
+
+            extracted_dirs = {"IBJts/source/cppclient":"tws"}
         
         # create a client and a sample folder
-        for k, v in extracted_dirs.items():
-            shutil.move(k, v)
+            for k, v in extracted_dirs.items():
+                shutil.move(k, v)
         
         # create the cmake file
-        f = open('CMakeLists.txt', 'w+')
-        f.writelines(
-            ['cmake_minimum_required(VERSION 2.8.9)\r\n',
-             'project(tws)\r\n',
-             'include_directories(tws)\r\n',
-             'SET(CMAKE_CXX_STANDARD 11)\r\n'
-             'file(GLOB SOURCES "tws/client/*.cpp")\r\n',
-             'file(GLOB PUBLIC_HEADER "tws/client/*.h")\r\n'
-            ])
+            f = open('CMakeLists.txt', 'w+')
+            f.writelines(
+                ['cmake_minimum_required(VERSION 2.8.9)\r\n',
+                 'project(tws)\r\n',
+                 'include_directories(tws)\r\n',
+                 'SET(CMAKE_CXX_STANDARD 11)\r\n'
+                 'file(GLOB SOURCES "tws/client/*.cpp")\r\n',
+                 'file(GLOB PUBLIC_HEADER "tws/client/*.h")\r\n'
+                ])
         
-        if self.options.shared:
-            f.writelines('add_library(tws SHARED ${SOURCES} ${PUBLIC_HEADER})\r\n')
-        else:
-            f.writelines('add_library(tws STATIC ${SOURCES} ${PUBLIC_HEADER})\r\n')
+            if self.options.shared:
+                f.writelines('add_library(tws SHARED ${SOURCES} ${PUBLIC_HEADER})\r\n')
+            else:
+                f.writelines('add_library(tws STATIC ${SOURCES} ${PUBLIC_HEADER})\r\n')
         
-        f.writelines(['install(TARGETS tws ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)'])    
-        f.close()
+                f.writelines(['install(TARGETS tws ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)'])    
+                f.close()
         
     def _configure_cmake(self):
         cmake = CMake(self, set_cmake_flags=True)

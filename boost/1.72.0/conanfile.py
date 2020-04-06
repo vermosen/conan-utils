@@ -651,7 +651,6 @@ class BoostConan(ConanFile):
         contents = ""
         if self.zip_bzip2_requires_needed:
             def create_library_config(name):
-                self.output.info(self.deps_cpp_info[name])
                 includedir = self.deps_cpp_info[name].include_paths[0].replace('\\', '/')
                 libdir = self.deps_cpp_info[name].lib_paths[0].replace('\\', '/')
                 lib = self.deps_cpp_info[name].libs[0]
