@@ -28,9 +28,9 @@ class GoogleBenchmarkConan(ConanFile):
     description = "Precise and Flat Reflection"
     homepage = "https://github.com/apolukhin/magic_get"
     url = "https://github.com/apolukhin/magic_get"
-    generators = "cmake"
-    settings = "os", "arch", "compiler"
-
+    exports_sources = "include/*"
+    no_copy_source = True
+    
     scm = {
         "type": "git",
         "url": "https://github.com/apolukhin/magic_get.git",
@@ -44,7 +44,10 @@ class GoogleBenchmarkConan(ConanFile):
         pass
 
     def package(self):
-        self.copy("include", dst="include", keep_path=True)
+        self.copy("*.hpp", dst="include", src="include", keep_path=True)
 
     def package_info(self):
         pass
+
+    def package_id(self):
+        self.info.header_only()
