@@ -48,19 +48,19 @@ class GoogleBenchmarkConan(ConanFile):
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
-            del self.options.shared  # See https://github.com/google/benchmark/issues/639 - no Windows shared support for now
+            del self.options.shared
 
     def build_requirements(self):
         if tools.get_env("CONAN_RUN_TESTS", False):
-            self.build_requires("gtest/1.8.1@bincrafters/stable")
+            self.build_requires("gtest/1.8.1@%s/%s" % (self.user, self.channel))
 
     def source(self):
         tools.replace_in_file("CMakeLists.txt",
                               "project (benchmark)",
                               """
-                                 project (benchmark)
-                                 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-                                 conan_basic_setup(TARGETS)
+                                    project (benchmark)
+                                    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+                                    conan_basic_setup(TARGETS)
                               """)
 
     def _configure_cmake(self):
