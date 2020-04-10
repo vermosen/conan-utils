@@ -23,7 +23,7 @@ class RConan(ConanFile):
     default_options = {
         "shared": True ,
         "fPIC": True ,
-        "Rshlib": True
+        "Rshlib": False
     }
     
     generators = "cmake"
@@ -39,7 +39,7 @@ class RConan(ConanFile):
 
     def build_requirements(self):
         self.build_requires("libcurl/7.64.1@%s/%s" % (self.user, self.channel))
-        self.build_requires("bzip2/1.0.6@%s/%s" % (self.user, self.channel))
+        self.build_requires("bzip2/1.0.8@%s/%s" % (self.user, self.channel))
         self.build_requires("lzma/5.2.4@%s/%s" % (self.user, self.channel))
         self.build_requires("pcre/8.41.0@%s/%s" % (self.user, self.channel))
         self.build_requires("zlib/1.2.11@%s/%s" % (self.user, self.channel))

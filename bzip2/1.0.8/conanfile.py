@@ -41,6 +41,7 @@ class Bzip2Conan(ConanFile):
     def build(self):
         with tools.chdir(self._source_subfolder):
             env_build = AutoToolsBuildEnvironment(self)
+            env_build.fpic = self.options.fPIC
             env_build.make()
         pass
     
