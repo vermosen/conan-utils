@@ -22,7 +22,7 @@
 
 from conans import ConanFile, CMake, tools
 
-class GoogleBenchmarkConan(ConanFile):
+class PfrConan(ConanFile):
     name = "pfr"
     version = "1.0.0"
     description = "Precise and Flat Reflection"

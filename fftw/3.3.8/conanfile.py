@@ -44,8 +44,9 @@ class FFTWConan(ConanFile):
         cmake.definitions["ENABLE_FLOAT"] = self.options.precision == "single"
         cmake.definitions["ENABLE_LONG_DOUBLE"] = self.options.precision == "longdouble"
 
-        if self.options.fPIC:
-            cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
+        if self.settings.os != 'Windows':
+            if self.options.fPIC:
+                cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
             
         cmake.configure(source_folder=self._source_subfolder, build_folder=self._build_subfolder)
         return cmake
