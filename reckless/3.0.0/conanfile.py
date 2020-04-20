@@ -39,10 +39,12 @@ class RecklessConan(ConanFile):
         
         self.copy('*.a', src='build', dst='lib', keep_path=False)
         self.copy('*.lib', src='build', dst='lib', keep_path=False)
-        self.copy('*.pdb', src='build', dst='lib', keep_path=False)
-        
         self.copy('*.hpp', src='src/reckless/include', dst='include', keep_path=True)
 
         if self.settings.build_type == 'Debug':
             self.copy('*.cpp', src='src/reckless/src', dst='src', keep_path=True)
+            self.copy('*.pdb', src='build', dst='lib', keep_path=False)        
 
+    def package_info(self):
+        self.cpp_info.libs = ["reckless"]
+        pass
