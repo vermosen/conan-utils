@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+import shutil
 from conans import ConanFile, tools, CMake
 
 
@@ -14,9 +17,11 @@ class DoxygenConan(ConanFile):
     _build_subfolder = "build_subfolder"
     
     def source(self):
-        tools.Version(self.version)
-        tools.get("%s/archive/Release_%s_%s_%s.tar.gz" % (self.homepage, vers.major, vers.minor, vers.patch))
-
+        vers = tools.Version(self.version)
+        prefix = 'Release_%s_%s_%s' % (vers.major, vers.minor, vers.patch)
+        tools.get("%s/archive/%s.tar.gz" % (self.homepage, prefix))
+        shutil.move('doxygen-%s' % prefix, self._source_subfolder)
+        
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.configure(source_folder=self._source_subfolder, build_folder=self._build_subfolder)
