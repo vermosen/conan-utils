@@ -50,10 +50,17 @@ class LZ4Conan(ConanFile):
         prefix = tools.unix_path(prefix) if self.settings.os == "Windows" else prefix
         with tools.chdir(self._source_subfolder):
             env_build = AutoToolsBuildEnvironment(self)
+
             if self.options.shared:
                 args = ["BUILD_SHARED=yes", "BUILD_STATIC=no"]
             else:
                 args = ["BUILD_SHARED=no", "BUILD_STATIC=yes"]
+
+            if self.settings.compiler != 'Visual Studio':
+                args.append("CFLAGS=-fPIC")
+                self.output.info('fpic flag set to %s' % env_build.fpic)
+
+
             env_build.make(args=args)
             args.extend(["PREFIX=%s" % prefix, "install"])
             env_build.make(args=args)
