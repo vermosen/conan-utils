@@ -95,6 +95,7 @@ class TwsConan(ConanFile):
         self.copy(pattern="*.pdb", dst="bin", src=".", keep_path=False)
         self.copy(pattern="*.a", dst="lib", src="lib", keep_path=True)
         self.copy(pattern="*.h", dst="include/tws", src="tws/client", keep_path=True)
+        self.copy(pattern="*.cpp", dst="include/tws", src="tws/client", keep_path=True)
 
         
     def package_id(self):
