@@ -79,6 +79,9 @@ class PCREConan(ConanFile):
         cmake.definitions["PCRE_SUPPORT_LIBEDIT"] = False
         cmake.definitions["VERBOSE"]=True
 
+        if self.options.with_bzip2:
+            cmake.definitions["BZIP2_INCLUDE_DIR"] = "CONAN_INCLUDE_DIRS_BZIP2"
+
         if self.options.fPIC:
             cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         
