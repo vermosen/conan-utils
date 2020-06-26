@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 
 class SociConan(ConanFile):
-    name = ""
+    name = "soci"
     description = """SOCI is a database access library for C++ that makes the illusion
     of embedding SQL queries in the regular C++ code, staying entirely
     within the Standard C++."""
@@ -97,7 +97,7 @@ conan_basic_setup()''')
             self.cpp_info.libs.append("pq")
 
         if self.options.with_sqlite3:
-            self.cpp_info.libs.append("soci_sqlite3")
+            self.cpp_info.libs.insert(0, "soci_sqlite3")
 
     def system_requirements(self):
         pack_names = []
