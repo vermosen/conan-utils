@@ -1,0 +1,4 @@
+sources:
+  "0.5.10":
+    url: "https://github.com/autodiff/autodiff/archive/v0.5.10.zip"
+    sha256: "6bc7425a9f5f2236ce30320279a55feaf9824112afe704bc15aa945cb20ae7de"
