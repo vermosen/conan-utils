@@ -21,5 +21,6 @@ FC=/opt/gcc93/bin/gfortran
 AR=/opt/gcc93/bin/gcc-ar
 NM=/opt/gcc93/bin/gcc-nm
 RANLIB=/opt/gcc93/bin/gcc-ranlib
+MAKE=/opt/gcc93/bin/make
 LD_LIBRARY_PATH=/opt/gcc93/lib64:/opt/gcc93/usr/lib:/opt/gcc93/usr/lib/gcc/x86_64-redhat-linux/7
 PATH=[/opt/gcc93/bin]
