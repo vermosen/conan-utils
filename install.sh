@@ -12,10 +12,11 @@ ARG_SETTINGS=""
 ARG_PROFILE="gcc93"
 ARG_VERBOSE=0
 ARG_NOPKG=0
+ARG_POLICY="missing"
 
 # script option parsing
-OPT_MNEMOS=p:qhvo:s:p:n
-OPT_NAMES=prefix:,quiet,help,verbose,options:,settings:,profile:,no-package
+OPT_MNEMOS=p:qhvo:s:p:nb:u:c:
+OPT_NAMES=prefix:,quiet,help,verbose,options:,settings:,profile:,no-package,build:,user:,channel:
 
 PARSED=$(getopt --options=$OPT_MNEMOS --longoptions=$OPT_NAMES --name "$0" -- "$@")
 
@@ -34,10 +35,13 @@ while true; do
             echo "-p   --prefix     location of conan binary                "
             echo "-q   --quiet      quiet mode                              "
 						echo "-v   --verbose    additional logs                         "
+						echo "-u   --user       conan user                              "
+						echo "-c   --channel    conan channel                           "
 						echo "-o   --options    conan options                           "
 						echo "-s   --settings   conan settings                          "
 						echo "-p   --profile    conan profile                           "
 						echo "-n   --no-package only perform the configuration install  "
+						echo "-b   --build      the build policy                        "
 						echo "-h   --help       display this help                       "
 						shift 1
             exit 0
@@ -70,6 +74,18 @@ while true; do
 						ARG_NOPKG=1
 						shift 1
 						;;
+				-b|--build)
+						ARG_POLICY=$2
+						shift 2
+						;;
+				-u|--user)
+						ARG_USER=$2
+						shift 2
+						;;
+				-c|--channel)
+						ARG_USER=$2
+						shift 2
+						;;
 				--)
             shift
 						break
@@ -88,10 +104,10 @@ logline () {
   fi
 }
 
-
-
 CONAN=$ARG_PREFIX/conan
 
+# we also make sure we can reach python
+PATH=$ARG_PREFIX:$PATH
 declare -a LIB_VERS
 
 LIB_VERS[0]="pfr;1.0.0"
@@ -104,10 +120,17 @@ LIB_VERS[6]="zlib;1.2.11"
 LIB_VERS[7]="lz4;1.9.2"
 LIB_VERS[8]="zstd;1.4.4"
 LIB_VERS[9]="bzip2;1.0.8"
-LIB_VERS[10]="doxygen;1.8.18"
-LIB_VERS[11]="rcpp;1.0.4"
-LIB_VERS[12]="pybind11;2.5.0"
-LIB_VERS[13]="boost;1.72.0"
+LIB_VERS[10]="boost;1.72.0"
+LIB_VERS[11]="pybind11;2.5.0"
+LIB_VERS[12]="doxygen;1.8.18"
+LIB_VERS[13]="sqlite3;3.31.1"
+LIB_VERS[14]="soci;4.0.0"
+LIB_VERS[15]="openssl;1.1.1c"
+LIB_VERS[16]="libcurl;7.64.1"
+LIB_VERS[17]="lzma;5.2.4"
+LIB_VERS[18]="pcre;8.41.0"
+LIB_VERS[19]="r-cran;3.5.0"
+LIB_VERS[20]="rcpp;1.0.4"
 
 #TODO: parse options and settings lines as "-s setting1 -s setting2, etc"
 OPTIONS="${ARG_OPTIONS}"
@@ -134,7 +157,16 @@ else
   do
     IFS=";" read -r -a i <<< "${lib}"
     logline "installing library ${i[0]} version ${i[1]} ..."
-    CONAN_CMD="$CONAN create ${i[0]}/${i[1]} ${i[0]}/${i[1]}@$ARG_USER/$ARG_CHANNEL -pr=$ARG_PROFILE $CONAN_OPTIONS $CONAN_SETTINGS"
+
+		# handle the multiversion packages
+		if [ -d ${i[0]}/${i[1]} ]
+		then
+				CONAN_DIR=${i[0]}/${i[1]}
+		else
+				CONAN_DIR=${i[0]}
+		fi
+		
+    CONAN_CMD="$CONAN create ${CONAN_DIR} ${i[0]}/${i[1]}@$ARG_USER/$ARG_CHANNEL -pr=$ARG_PROFILE $CONAN_OPTIONS $CONAN_SETTINGS --build ${ARG_POLICY}"
     eval RESULT=\`${CONAN_CMD}\`
 
 	  if [ $? = 0 ]; then
