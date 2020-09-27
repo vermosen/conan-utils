@@ -2,7 +2,6 @@ import os
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
 from conans.errors import ConanInvalidConfiguration
 
-
 class nfftConan(ConanFile):
     name = "nfft"
     url = "https://github.com/NFFT/nfft"
@@ -24,32 +23,27 @@ class nfftConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
-        #self.requires("fftw/3.3.8@%s/%s" % (self.user, self.channel))
-        pass
+        self.requires("fftw/3.3.8@%s/%s" % (self.user, self.channel))
 
     def source(self):
         tools.get(**self.conan_data["sources"][self.version])
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
-
+        tools.mkdir(self._build_subfolder)
     
     def build(self):
         with tools.chdir(self._source_subfolder):
             self.output.info('cwd: %s' % os.getcwd())
             self.run('./bootstrap.sh')
+
+        with tools.chdir(self._build_subfolder):
             autotools = AutoToolsBuildEnvironment(self)
-            autotools.configure()
+            autotools.configure(configure_dir='../%s' % self._source_subfolder)
             autotools.make()
-     
+            autotools.install()
+            
     def package(self):
         pass
     
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
-        if tools.is_apple_os(self.settings.os):
-            self.cpp_info.frameworks.append("CoreFoundation")
-
-        if self.options.build_tools:
-            bindir = os.path.join(self.package_folder, "bin")
-            self.output.info("Appending PATH environment variable: {}".format(bindir))
-            self.env_info.PATH.append(bindir)
+        pass
