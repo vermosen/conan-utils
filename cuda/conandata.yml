@@ -1,0 +1,7 @@
+sources:
+  "10.1":
+    url: "https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.105_418.39_linux.run"
+    sha256: "33ac60685a3e29538db5094259ea85c15906cbd0f74368733f4111eab6187c8f"
+  "11.0":
+    url: "http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda_11.0.2_450.51.05_linux.run"
+    sha256: "48247ada0e3f106051029ae8f70fbd0c238040f58b0880e55026374a959a69c1"

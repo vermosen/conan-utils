@@ -2,3 +2,6 @@ sources:
   "3.5.1":
     url: "https://github.com/NFFT/nfft/archive/3.5.1.tar.gz"
     sha256: "8d53164d7cd85ad77e1bd03e36c4a99ef73c77f640e527db816cdc3fcb43d6aa"
+  "3.5.2":
+    url: "https://github.com/NFFT/nfft/archive/3.5.2.tar.gz"
+    sha256: "c68b22de2b914328d5d9fd33778defc66b226c72ef4c103956bbf36bbcd18e45"
