@@ -12,7 +12,7 @@ class QuantLibConan(ConanFile):
     homepage = "https://www.quantlib.org/"
     url = "https://github.com/lballabio/QuantLib/"
     description = "The QuantLib C++ library"
-    settings = "os", "compiler", "build_type", "arch", "cppstd"
+    settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
