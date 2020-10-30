@@ -53,6 +53,8 @@ class EigenConan(ConanFile):
         return cmake
 
     def build(self):
+        # the step could be completely disabled since eigen perform again the whole
+        # setup on the install steps
         self.output.info('current working dir: %s' % os.getcwd())
         os.makedirs(self._build_subfolder)
         with tools.chdir(self._build_subfolder):
@@ -61,8 +63,8 @@ class EigenConan(ConanFile):
 
     def package(self):
         with tools.chdir(os.path.join(self.build_folder, self._build_subfolder)):
-            # do not reinvoke cmake here
-            self.run("make install")
+            cmake = self._configure_cmake()
+            cmake.install()
 
         # additional ressources
         if self.settings.build_type == 'Debug':

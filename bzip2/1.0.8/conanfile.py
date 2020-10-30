@@ -23,12 +23,11 @@ class Bzip2Conan(ConanFile):
     _source_subfolder = 'source_subfolder'
     _build_subfolder  = 'build_subfolder'
 
-    def config_options(self):
-        if self.settings.os == "Windows":
-            del self.options.fPIC
-
     def configure(self):
         del self.settings.compiler.libcxx
+
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     def source(self):
         folder_name = "%s-%s" % (self.name, self.version)
@@ -40,9 +39,13 @@ class Bzip2Conan(ConanFile):
 
     def build(self):
         with tools.chdir(self._source_subfolder):
-            env_build = AutoToolsBuildEnvironment(self)
-            env_build.fpic = self.options.fPIC
-            env_build.make()
+            
+            if self.settings.os == "Windows":
+                pass
+            else:
+                env_build = AutoToolsBuildEnvironment(self)
+                env_build.fpic = self.options.fPIC
+                env_build.make()
         pass
     
     def package(self):
