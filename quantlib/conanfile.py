@@ -27,7 +27,7 @@ class QuantLibConan(ConanFile):
 
     def source(self):
         version = self.version.split('.')
-        # https://github.com/lballabio/QuantLib/archive/QuantLib-v1.13.zip
+        # format: https://github.com/lballabio/QuantLib/archive/QuantLib-v1.13.zip
         filename = '{0}-{0}-v{1}.{2}'.format(self.rawname, version[0], version[1])
         tools.download('{0}archive/{1}-v{2}.{3}.tar.gz'.format(self.url, self.rawname, version[0], version[1]), '%s.tar.gz' % filename)
         tools.unzip('%s.tar.gz' % filename)
@@ -74,4 +74,4 @@ class QuantLibConan(ConanFile):
             self.copy('ql/*/*.cpp', dst='src', src=self._source_subfolder)
 
     def package_info(self):
-        self.cpp_info.libs = ["quantlib"]
+        self.cpp_info.libs = ["QuantLib"]
