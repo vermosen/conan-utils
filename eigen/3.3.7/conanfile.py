@@ -29,9 +29,11 @@ class EigenConan(ConanFile):
         pass
 
     def source(self):
-        source_url = "http://bitbucket.org/eigen/eigen"
-        tools.get("{0}/get/{1}.tar.gz".format(source_url, self.version))
-        shutil.move(glob("eigen-eigen-*")[0], self._source_subfolder)
+
+        #https://gitlab.com/libeigen/eigen/-/archive/3.3.8/eigen-3.3.8.tar.gz
+        source_url = "https://gitlab.com/libeigen/eigen"
+        tools.get("{0}/-/archive/{1}/eigen-{1}.tar.gz".format(source_url, self.version))
+        shutil.move(glob("eigen-*")[0], self._source_subfolder)
 
         if self.settings.build_type == 'Debug':
             #s.makedirs('%s/%s/debug/gdb' % (self.build_folder, self._build_subfolder), exist_ok=True)

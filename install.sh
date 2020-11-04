@@ -110,6 +110,11 @@ CONAN=$ARG_PREFIX/conan
 PATH=$ARG_PREFIX:$PATH
 declare -a LIB_VERS
 
+
+# TODO install requirements
+# flex bison autoconf automake libtool
+
+
 LIB_VERS[0]="pfr;1.0.0"
 LIB_VERS[1]="tws;9.79.1"
 LIB_VERS[2]="fmt;6.1.2"
@@ -131,6 +136,7 @@ LIB_VERS[17]="lzma;5.2.4"
 LIB_VERS[18]="pcre;8.41.0"
 LIB_VERS[19]="r-cran;3.5.0"
 LIB_VERS[20]="rcpp;1.0.4"
+LIB_VERS[21]="eigen;3.3.7"
 
 #TODO: parse options and settings lines as "-s setting1 -s setting2, etc"
 OPTIONS="${ARG_OPTIONS}"
