@@ -137,6 +137,7 @@ LIB_VERS[18]="pcre;8.41.0"
 LIB_VERS[19]="r-cran;3.5.0"
 LIB_VERS[20]="rcpp;1.0.4"
 LIB_VERS[21]="eigen;3.3.7"
+LIB_VERS[22]="fftw;3.3.8"
 
 #TODO: parse options and settings lines as "-s setting1 -s setting2, etc"
 OPTIONS="${ARG_OPTIONS}"
