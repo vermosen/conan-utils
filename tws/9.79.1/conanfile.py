@@ -67,13 +67,17 @@ class TwsConan(ConanFile):
              'file(GLOB SOURCES "tws/client/*.cpp")\r\n',
              'file(GLOB PUBLIC_HEADER "tws/client/*.h")\r\n'
             ])
-    
+
+        if self.options.fPIC:
+            f.writelines('set(CMAKE_POSITION_INDEPENDENT_CODE ON)\r\n')
+
         if self.options.shared:
             f.writelines('add_library(tws SHARED ${SOURCES} ${PUBLIC_HEADER})\r\n')
         else:
             f.writelines('add_library(tws STATIC ${SOURCES} ${PUBLIC_HEADER})\r\n')
             f.writelines(['install(TARGETS tws ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)'])    
-            f.close()
+
+        f.close()
         
     def _configure_cmake(self):
         cmake = CMake(self, set_cmake_flags=True)
