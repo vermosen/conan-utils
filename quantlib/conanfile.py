@@ -13,8 +13,28 @@ class QuantLibConan(ConanFile):
     url = "https://github.com/lballabio/QuantLib/"
     description = "The QuantLib C++ library"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {
+          "shared":               [True, False]
+        , "fPIC" :                [True, False]
+        , "extra_safety_check" :  [True, False]
+        , "enable_session":       [True, False]
+        , "high_resolution_date": [True, False]
+        , "use_std_shared_ptr":   [True, False]
+        , "use_std_unique_ptr":   [True, False]
+        , "use_std_function":     [True, False]
+        , "use_std_tuple":        [True, False]
+    }
+    
+    default_options = "shared=False" \
+        , "fPIC=True" \
+        , "extra_safety_check=False" \
+        , "enable_session=False" \
+        , "high_resolution_date=False" \
+        , "use_std_shared_ptr=False" \
+        , "use_std_unique_ptr=False" \
+        , "use_std_function=False" \
+        , "use_std_tuple=False"
+    
     generators = "cmake"
     _source_subfolder = 'src'
 
@@ -34,17 +54,40 @@ class QuantLibConan(ConanFile):
         shutil.move(filename, self._source_subfolder)
 
     def cmake_configure(self):
+
+        if self.is_msvc:
+            del self.options.fPIC
+            
         cmake = CMake(self)
 
+        cmake.definitions["CMAKE_CXX_FLAGS"] = ''
+        
         if self.settings.compiler == 'gcc':
             if self.settings.compiler.libcxx == 'libstdc++11':
-                cmake.definitions["CMAKE_CXX_FLAGS"] = "-D_GLIBCXX_USE_CXX11_ABI=1"
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -D_GLIBCXX_USE_CXX11_ABI=1"
             else:
-                cmake.definitions["CMAKE_CXX_FLAGS"] = "-D_GLIBCXX_USE_CXX11_ABI=0"
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -D_GLIBCXX_USE_CXX11_ABI=0"
+            if self.options.extra_safety_check:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_EXTRA_SAFETY_CHECKS"
 
+            if self.options.enable_session:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_ENABLE_SESSIONS"
+            if self.options.high_resolution_date:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_HIGH_RESOLUTION_DATE"
+            if self.options.use_std_shared_ptr:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_USE_STD_SHARED_PTR"
+            if self.options.use_std_unique_ptr:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_USE_STD_UNIQUE_PTR"
+            if self.options.use_std_function:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_USE_STD_FUNCTION"
+            if self.options.use_std_tuple:
+                cmake.definitions["CMAKE_CXX_FLAGS"] += " -DQL_USE_STD_TUPLE"
             # more logs
             cmake.definitions["CMAKE_VERBOSE_MAKEFILE"] = "ON"
 
+        if self.options.fPIC:
+            cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
+            
         cmake.configure(source_folder="src", build_folder=self.build_dir)
         return cmake
 
@@ -75,3 +118,9 @@ class QuantLibConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["QuantLib"]
+
+        if self.options.use_std_shared_ptr:
+            self.cpp_info.defines.append("QL_USE_STD_SHARED_PTR")
+
+        if self.options.use_std_unique_ptr:
+            self.cpp_info.defines.append("QL_USE_STD_UNIQUE_PTR")

@@ -11,6 +11,8 @@ class SociConan(ConanFile):
     license = "Boost Software License - Version 1.0"
     url = "https://github.com/laeknaromur/conan-soci"
     settings = "os", "compiler", "build_type", "arch", "cppstd"
+
+    # note: LTO option will be enabled only in 4.0.2
     options = {"lto": [True, False],
                "fPIC": [True, False],
                "shared": [True, False],
@@ -88,7 +90,7 @@ conan_basic_setup()''')
         cmake.definitions["CMAKE_BUILD_TYPE"] = self.settings.build_type
         cmake.definitions["CMAKE_INSTALL_PREFIX"] = "{}/install".format(self.build_dir)
 
-        # enable lto
+        # enable lto (TODO: check on version)
         cmake.definitions["SOCI_LTO"] = "ON" if self.options.lto else "OFF"
 
         # PIC

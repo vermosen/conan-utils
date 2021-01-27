@@ -46,4 +46,4 @@ class nfftConan(ConanFile):
         pass
     
     def package_info(self):
-        pass
+        self.cpp_info.libs = tools.collect_libs(self)
