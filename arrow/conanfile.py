@@ -303,6 +303,9 @@ class ArrowConan(ConanFile):
         self._cmake.definitions["BZip2_SOURCE"] = "SYSTEM"
         self._cmake.definitions["ARROW_WITH_LZ4"] = self.options.with_lz4
         self._cmake.definitions["Lz4_SOURCE"] = "SYSTEM"
+        # added
+        self._cmake.definitions["LZ4_INCLUDE_DIR"] = '%s/include' % self.deps_cpp_info["lz4"].rootpath
+        self._cmake.definitions["LZ4_LIB"] = self.deps_cpp_info['lz4'].libs[0]
         self._cmake.definitions["ARROW_WITH_SNAPPY"] = self.options.with_snappy
         self._cmake.definitions["Snappy_SOURCE"] = "SYSTEM"
         self._cmake.definitions["ARROW_WITH_ZLIB"] = self.options.with_zlib
