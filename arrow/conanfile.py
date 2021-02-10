@@ -20,6 +20,7 @@ class ArrowConan(ConanFile):
         "parquet": [True, False],
         "plasma": [True, False],
         "cli": [True, False],
+        "pyarrow": [True, False],
         "compute": ["auto", True, False],
         "dataset_modules":  [True, False],
         "deprecated": [True, False],
@@ -58,6 +59,7 @@ class ArrowConan(ConanFile):
         "parquet": False,
         "plasma": False,
         "cli": False,
+        "pyarrow": False,
         "compute": "auto",
         "dataset_modules": False,
         "deprecated": True,
@@ -192,6 +194,9 @@ class ArrowConan(ConanFile):
         else:
             return bool(self.options.with_utf8proc)
 
+    def _with_arrow_python(self):
+        return self.options.pyarrow
+
     def _with_llvm(self, required=False):
         if required or self.options.with_llvm == "auto":
             return bool(self.options.gandiva)
@@ -286,7 +291,8 @@ class ArrowConan(ConanFile):
         self._cmake.definitions["ARROW_JSON"] = self.options.with_json
 
         # self._cmake.definitions["ARROW_BOOST_VENDORED"] = False
-        self._cmake.definitions["BOOST_SOURCE"] = "SYSTEM"
+        #self._cmake.definitions["BOOST_SOURCE"] = "SYSTEM"
+        self._cmake.definitions["BOOST_ROOT"] = self.deps_cpp_info["boost"].rootpath
         self._cmake.definitions["Protobuf_SOURCE"] = "SYSTEM"
         self._cmake.definitions["gRPC_SOURCE"] = "SYSTEM"
         if self._with_protobuf():
@@ -299,18 +305,42 @@ class ArrowConan(ConanFile):
         self._cmake.definitions["Brotli_SOURCE"] = "SYSTEM"
         self._cmake.definitions["ARROW_BROTLI_USE_SHARED"] = "brotli" in self.options and not self.options["brotli"].shared
         self._cmake.definitions["gflags_SOURCE"] = "SYSTEM"
+
+        if self._with_arrow_python():
+            self._cmake.definitions["ARROW_PYTHON"] = "ON"
+        else:
+            self._cmake.definitions["ARROW_PYTHON"] = "OFF"
+
+        # bzip2
         self._cmake.definitions["ARROW_WITH_BZ2"] = self.options.with_bz2
-        self._cmake.definitions["BZip2_SOURCE"] = "SYSTEM"
+        #self._cmake.definitions["BZip2_SOURCE"] = "SYSTEM"
+        self._cmake.definitions["BZ2_INCLUDE_DIR"] = '%s/include' % self.deps_cpp_info["bzip2"].rootpath
+        self._cmake.definitions["BZ2_LIB"] = self.deps_cpp_info['bzip2'].libs[0]
+
+        # lz4
         self._cmake.definitions["ARROW_WITH_LZ4"] = self.options.with_lz4
-        self._cmake.definitions["Lz4_SOURCE"] = "SYSTEM"
-        # added
+        #self._cmake.definitions["Lz4_SOURCE"] = "SYSTEM"
         self._cmake.definitions["LZ4_INCLUDE_DIR"] = '%s/include' % self.deps_cpp_info["lz4"].rootpath
-        self._cmake.definitions["LZ4_LIB"] = self.deps_cpp_info['lz4'].libs[0]
+        lib = self.deps_cpp_info['lz4'].libs[0]
+        self.output.info('-- lz4 deps location: %s' % lib)
+        self._cmake.definitions["LZ4_LIB"] = lib
+        ##
+        
         self._cmake.definitions["ARROW_WITH_SNAPPY"] = self.options.with_snappy
         self._cmake.definitions["Snappy_SOURCE"] = "SYSTEM"
+
+        # zlib
         self._cmake.definitions["ARROW_WITH_ZLIB"] = self.options.with_zlib
+        #self._cmake.definitions["ZLIB_SOURCE"] = "SYSTEM"
+        #self._cmake.definitions["ZLIB_INCLUDE_DIRS"] = '%s/include' % self.deps_cpp_info["zlib"].rootpath
+        #lib = self.deps_cpp_info['zlib'].libs[0]
+        #self.output.info('-- zlib deps location: %s' % lib)
+        #self._cmake.definitions["ZLIB_LIBRARIES"] = lib
+        self._cmake.definitions["ZLIB_ROOT"] = self.deps_cpp_info["zlib"].rootpath
+        # ?
         self._cmake.definitions["RE2_SOURCE"] = "SYSTEM"
-        self._cmake.definitions["ZLIB_SOURCE"] = "SYSTEM"
+        
+        
         self._cmake.definitions["ARROW_WITH_ZSTD"] = self.options.with_zstd
         if tools.Version(self.version) >= "2.0":
             self._cmake.definitions["zstd_SOURCE"] = "SYSTEM"
