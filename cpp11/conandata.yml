@@ -1,0 +1,4 @@
+sources:
+  "0.2.5":
+    url: "https://github.com/r-lib/cpp11/archive/v0.2.5.tar.gz"
+    sha256: "0624befd69a3d7de24f7c44fb0666a7fc29f1df72cb9476102932c1641caa225"

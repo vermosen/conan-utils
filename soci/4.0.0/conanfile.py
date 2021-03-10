@@ -58,6 +58,7 @@ conan_basic_setup()''')
         cmake = CMake(self)
 
         # not sure the gnuXX flags would be handled here...
+
         cmake.definitions["CMAKE_CXX_STANDARD"] = self.settings.cppstd
         
         cmake.definitions["WITH_DB2"] = "ON" if self.options.with_db2 else "OFF"
